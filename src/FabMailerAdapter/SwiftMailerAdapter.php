@@ -117,7 +117,7 @@ class SwiftMailerAdapter implements MailerInterface
     /**
     * @param array $headers
     */
-    public function setHeaders($headers = array())
+    public function setHeaders(array $headers = array())
     {
         foreach($headers as $k => $v)
         {
@@ -153,7 +153,7 @@ class SwiftMailerAdapter implements MailerInterface
     * @param array $filePaths
     * @return mixed|void
     */
-    public function attachFiles($filePaths = [])
+    public function attachFiles(array $filePaths = [])
     {
         foreach($filePaths as $filePath) {
             $this->message->attach(\Swift_Attachment::fromPath($filePath));

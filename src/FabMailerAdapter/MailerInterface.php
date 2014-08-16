@@ -61,7 +61,7 @@ interface MailerInterface
      */
     public function setFrom($from, $name = '');
 
-    public function setHeaders($headers);
+    public function setHeaders(array $headers = []);
 
     /**
      * Set to Address
@@ -92,10 +92,10 @@ interface MailerInterface
     /**
      * Attach file
      *
-     * @param $filePath
+     * @param array $filePaths
      * @return mixed
      */
-    public function attachFiles($filePaths = []);
+    public function attachFiles(array $filePaths = []);
 
     /**
      * Set Blind Carbon Copy

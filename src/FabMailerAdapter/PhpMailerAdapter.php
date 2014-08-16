@@ -111,7 +111,7 @@ class PhpMailerAdapter implements MailerInterface
         $this->mailer->FromName = $name;
     }
 
-    public function setHeaders($headers)
+    public function setHeaders(array $headers = [])
     {
         foreach($headers as $k => $v)
         {
@@ -159,7 +159,7 @@ class PhpMailerAdapter implements MailerInterface
      * @param $filePaths
      * @return mixed
      */
-    public function attachFiles($filePaths = [])
+    public function attachFiles(array $filePaths = [])
     {
         foreach($filePaths as $filePath)
         {
