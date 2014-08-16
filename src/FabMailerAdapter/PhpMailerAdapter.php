@@ -207,9 +207,6 @@ class PhpMailerAdapter implements MailerInterface
      */
     public function send()
     {
-        $sent = $this->mailer->send();
-        echo $this->mailer->ErrorInfo;
-        return $sent;
+        return $this->mailer->send();
     }
-
 } 
