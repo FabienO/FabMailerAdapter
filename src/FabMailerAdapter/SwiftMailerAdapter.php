@@ -28,15 +28,15 @@ class SwiftMailerAdapter implements MailerInterface
     */
     public function setTransport($host, $port, $user, $pass, $encryption = '')
     {
-        $this->transport = new \Swift_SmtpTransport();
+        if($user !== '') {
+            $this->transport = new \Swift_SmtpTransport($host, $port, $encryption);
 
-        if($encryption !== '') {
-            $this->transport->setEncryption($encryption);
+            $this->transport->newInstance($host, $port)
+                ->setUsername($user)
+                ->setPassword($pass);
         }
 
-        $this->transport->newInstance($host, $port)
-        ->setUsername($user)
-        ->setPassword($pass);
+        $this->transport = new \Swift_SmtpTransport();
     }
 
     /**
@@ -201,9 +201,9 @@ class SwiftMailerAdapter implements MailerInterface
     */
     public function send()
     {
-        if(!($this->transport instanceof \Swift_Transport)) {
-            throw new uninstantiatedClassException('Transport layer not set');
-        }
+//        if(!($this->transport instanceof \Swift_Transport)) {
+//            throw new UninstantiatedClassException('Transport layer not set');
+//        }
 
         $this->mailer = new \Swift_Mailer($this->transport);
         return $this->mailer->send($this->message);

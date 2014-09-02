@@ -1,16 +1,16 @@
 <?php
 require_once __DIR__ . '/init.deployment.php';
 
-$mail = new FabMailerAdapter\PhpMailerAdapter();
+$mailerFactory = new FabMailerAdapter\MailerFactory();
+$mail = $mailerFactory->build('FabMailerAdapter\SwiftMailerAdapter');
 
 if(empty($mailQueue)) {
     die('No mail');
 }
 
 foreach($mailQueue as $smtp => $mailers) {
-    if(isset($mailers['connection']['host']) && $mailers['connection']['host'] != '') {
-        $mail->setTransport($mailers['connection']['host'], $mailers['connection']['port'], $mailers['connection']['user'], $mailers['connection']['pass'], $mailers['connection']['encryption']);
-    }
+
+    $mail->setTransport($mailers['connection']['host'], $mailers['connection']['port'], $mailers['connection']['user'], $mailers['connection']['pass'], $mailers['connection']['encryption']);
 
     foreach($mailers['emails'] as $email) {
         $mail->createMail();

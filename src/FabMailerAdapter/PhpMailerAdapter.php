@@ -29,10 +29,16 @@ class PhpMailerAdapter implements MailerInterface
      */
     public function setTransport($host, $port, $user, $pass, $encryption = '')
     {
+        if($user === '')
+        {
+            return;
+        }
+
         $this->mailer->isSMTP();
         $this->mailer->Host = $host;
         $this->mailer->Username = $user;
         $this->mailer->Password = $pass;
+        $this->mailer->Port = $port;
 
         $this->encryption = $encryption;
 

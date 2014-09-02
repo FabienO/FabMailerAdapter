@@ -10,7 +10,8 @@ Switch the settings in **init.deployment.php** for your testing purposes. I high
 ```php
 require_once __DIR__ . '/init.deployment.php';
 
-$mail = new FabMailerAdapter\PhpMailerAdapter();
+$mailerFactory = new FabMailerAdapter\MailerFactory();
+$mail = $mailerFactory->build('FabMailerAdapter\SwiftMailerAdapter');
 
 foreach($mailQueue as $smtp => $mailers) {
     if(isset($mailers['connection']['host']) && $mailers['connection']['host'] != '') {
