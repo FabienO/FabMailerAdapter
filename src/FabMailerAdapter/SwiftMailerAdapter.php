@@ -163,7 +163,8 @@ class SwiftMailerAdapter implements MailerInterface
     */
     public function attachFiles(array $filePaths = [])
     {
-        foreach($filePaths as $filePath) {
+        foreach($filePaths as $filePath)
+        {
             $this->message->attach(\Swift_Attachment::fromPath($filePath));
         }
     }
@@ -209,7 +210,8 @@ class SwiftMailerAdapter implements MailerInterface
     */
     public function send()
     {
-        if(!($this->transport instanceof \Swift_Transport)) {
+        if(!($this->transport instanceof \Swift_Transport))
+        {
             throw new UninstantiatedClassException('Transport layer not set');
         }
 
