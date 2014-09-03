@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/init.deployment.php';
 
-$mailerFactory = new FabMailerAdapter\MailerFactory();
-$mail = $mailerFactory->build('FabMailerAdapter\SwiftMailerAdapter');
+$mailerFactory = new FabMailerAdapter\MailerFactory('FabMailerAdapter\PhpMailerAdapter');
+$mail = $mailerFactory->create($mailerFactory);
 
 if(empty($mailQueue)) {
     die('No mail');

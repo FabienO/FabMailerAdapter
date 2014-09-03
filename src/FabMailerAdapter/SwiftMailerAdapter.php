@@ -16,6 +16,11 @@ class SwiftMailerAdapter implements MailerInterface
     protected $message;
     private $html;
 
+    public function __construct(MailerFactory $mailerFactory)
+    {
+        $this->mailerFactory = $mailerFactory;
+    }
+
     /**
     * Set transport layer settings
     *
@@ -28,15 +33,17 @@ class SwiftMailerAdapter implements MailerInterface
     */
     public function setTransport($host, $port, $user, $pass, $encryption = '')
     {
-        if($user !== '') {
-            $this->transport = new \Swift_SmtpTransport($host, $port, $encryption);
+        $this->mailerFactory->setClass('\Swift_SmtpTransport');
+        $this->transport = $this->mailerFactory->create();
 
-            $this->transport->newInstance($host, $port)
+        if($user !== '')
+        {
+            $this->transport->newInstance()
+                ->setHost($host)
+                ->setPort($port)
                 ->setUsername($user)
                 ->setPassword($pass);
         }
-
-        $this->transport = new \Swift_SmtpTransport();
     }
 
     /**
@@ -46,7 +53,8 @@ class SwiftMailerAdapter implements MailerInterface
     */
     public function createMail()
     {
-        $this->message = new \Swift_Message();
+        $this->mailerFactory->setClass('\Swift_Message');
+        $this->message = $this->mailerFactory->create();
     }
 
     /**
@@ -201,11 +209,13 @@ class SwiftMailerAdapter implements MailerInterface
     */
     public function send()
     {
-//        if(!($this->transport instanceof \Swift_Transport)) {
-//            throw new UninstantiatedClassException('Transport layer not set');
-//        }
+        if(!($this->transport instanceof \Swift_Transport)) {
+            throw new UninstantiatedClassException('Transport layer not set');
+        }
 
-        $this->mailer = new \Swift_Mailer($this->transport);
+        $this->mailerFactory->setClass('\Swift_Mailer');
+        $this->mailer = $this->mailerFactory->create($this->transport);
+
         return $this->mailer->send($this->message);
     }
 } 

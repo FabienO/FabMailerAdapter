@@ -14,9 +14,12 @@ class PhpMailerAdapter implements MailerInterface
     protected $mailer;
     protected $encryption;
 
-    public function __construct()
+    public function __construct(MailerFactory $mailerFactory)
     {
-        $this->mailer = new \PHPMailer;
+        $this->mailerFactory = $mailerFactory;
+        $this->mailerFactory->setClass('\PHPMailer');
+
+        $this->mailer = $this->mailerFactory->create();
     }
 
     /**
@@ -65,7 +68,7 @@ class PhpMailerAdapter implements MailerInterface
             // Reset mailer because a new email without encryption has come through.
             if($this->mailer->SMTPAuth && $this->encryption === '')
             {
-                $this->mailer = new \PHPMailer;
+                $this->mailer = $this->mailerFactory->build();
             }
         }
     }
